@@ -1,0 +1,33 @@
+{
+  "name": "pepr-proxy-controller",
+  "version": "0.0.1",
+  "description": "Proxy Controller",
+  "keywords": [
+    "pepr",
+    "k8s",
+    "policy-engine",
+    "pepr-module",
+    "security"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "pepr": {
+    "name": "pepr-proxy-controller",
+    "uuid": "dc08c8de-fe98-5a0f-9024-18af3d240e46",
+    "onError": "audit",
+    "alwaysIgnore": {
+      "namespaces": [],
+      "labels": []
+    }
+  },
+  "scripts": {
+    "k3d-setup": "k3d cluster delete pepr-dev && k3d cluster create pepr-dev --k3s-arg '--debug@server:0'"
+  },
+  "dependencies": {
+    "pepr": "0.12.0"
+  },
+  "devDependencies": {
+    "typescript": "5.0.4"
+  }
+}
