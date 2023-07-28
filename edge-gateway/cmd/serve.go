@@ -63,10 +63,4 @@ func init() {
 	serveCmd.PersistentFlags().StringVarP(&secretKey, "secret-key", "s", "", "Secret key for JWT validation. No secret means no JWT validation.")
 	serveCmd.PersistentFlags().StringSliceVarP(&insecureRoutes, "insecure-routes", "i", []string{}, "Routes that do not require JWT validation.")
 
-	// serveCmd.MarkFlagRequired("port")
-	// serveCmd.MarkFlagRequired("redirect-port")
-	// serveCmd.MarkFlagRequired("rate")
-	// serveCmd.MarkFlagRequired("secret-key")
-	// serveCmd.MarkFlagRequired("insecure-routes")
-
 }

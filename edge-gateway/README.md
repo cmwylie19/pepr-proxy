@@ -17,4 +17,6 @@ curl -H "Authorization: Bearer $(./token 88 secret)" localhost:8080
 
 Run with rate limit and token
 ```bash
+curl -L localhost:8080
+```
 

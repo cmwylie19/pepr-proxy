@@ -31,7 +31,7 @@ func (s *Server) Serve(port, redirectPort string, rateLimit int, secretKey strin
 			Skipper: func(c echo.Context) bool {
 				// Skip authentication for signup and login requests
 				for _, route := range insecureRoutes {
-					if c.Path() == route {
+					if c.Path() == route || c.Path() == "/not-authorized" {
 						return true
 					}
 				}
@@ -42,9 +42,10 @@ func (s *Server) Serve(port, redirectPort string, rateLimit int, secretKey strin
 	}
 
 	redirectHandler := func(c echo.Context) error {
-		c.Redirect(301, fmt.Sprintf("http://localhost:%s%s", redirectPort, c.Path()))
+		c.Redirect(http.StatusFound, fmt.Sprintf("http://localhost:%s%s", redirectPort, c.Path()))
 		return nil
 	}
+
 	fmt.Println("rateLimit: ", rateLimit)
 	if rateLimit != 0 {
 		// e.Use(middleware.RateLimiterWithConfig(config))
