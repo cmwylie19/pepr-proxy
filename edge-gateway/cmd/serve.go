@@ -31,7 +31,7 @@ and rate-limiting.
 
 Examples:
   edge-gateway serve --redirect-port 8080 --port 3333 
-  edge-gateway serve -r 8080 rate-limit -p 3333
+  edge-gateway serve -r 5173 -p 8080 jwt -s "secret" rateLimit --rate 2
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("serve called")
