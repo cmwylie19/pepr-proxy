@@ -3,7 +3,7 @@ import { PeprModule } from "pepr";
 import cfg from "./package.json";
 
 // HelloPepr is a demo capability that is included with Pepr. Comment or delete the line below to remove it.
-import { HelloPepr } from "./capabilities/hello-pepr";
+import { Controller } from "./capabilities/controller";
 
 /**
  * This is the main entrypoint for this Pepr module. It is run when the module is started.
@@ -11,7 +11,7 @@ import { HelloPepr } from "./capabilities/hello-pepr";
  */
 new PeprModule(cfg, [
   // "HelloPepr" is a demo capability that is included with Pepr. Comment or delete the line below to remove it.
-  HelloPepr,
+  Controller,
 
   // Your additional capabilities go here
 ]);

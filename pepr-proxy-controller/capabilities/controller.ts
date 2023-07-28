@@ -15,17 +15,16 @@ import {K8sAPI, createContainer} from "../lib/kubernetes-api"
  *  To test this capability you run `pepr dev`and then run the following command:
  *  `kubectl apply -f capabilities/hello-pepr.samples.yaml`
  */
-export const HelloPepr = new Capability({
-  name: "hello-pepr",
-  description: "A simple example capability to show how things work.",
-  namespaces: ["pepr-demo", "pepr-demo-2"],
+export const Controller = new Capability({
+  name: "gateway-controller",
+  description: "Controller for edge gateway.",
+  namespaces: [],
 });
 
 // Use the 'When' function to create a new Capability Action
-const { When } = HelloPepr;
+const { When } = Controller;
 const k8sAPI = new K8sAPI()
 
-let watchedPods: WatchedPods = {}
 let proxies: GatewayAttributes = {}
 RegisterKind(Gateway, {
   group: "pepr.dev",

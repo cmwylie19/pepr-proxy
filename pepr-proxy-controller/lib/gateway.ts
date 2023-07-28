@@ -32,6 +32,3 @@ export interface GatewayBody {
     jwtAuth?: JWTAuth,
     server?: Server,
 }
-  export interface WatchedPods {
-    [key: string]: string;
-  }
