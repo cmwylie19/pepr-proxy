@@ -2,7 +2,7 @@ import {
     a
   } from "pepr";
   
-export default class Gateway extends a.GenericKind {
+export class Gateway extends a.GenericKind {
     spec: {
         // RL Info
         rateLimit: RateLimit;
