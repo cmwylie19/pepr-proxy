@@ -10,10 +10,6 @@ export class Gateway extends a.GenericKind {
         jwtAuth:JWTAuth;
         // server info
         server: Server;
-        // Pods to add sidecar
-        targetPods: string[]; 
-        // namedspaces
-        namespaced: string[];
     };
   }
 
@@ -26,9 +22,16 @@ export class Gateway extends a.GenericKind {
     insecureRoutes?: string[];
   }
   type RateLimit = {
-    rate?: number;
+    rate?: string;
   };
-
+export interface GatewayAttributes {
+    [key: string] :GatewayBody
+}
+export interface GatewayBody {
+    rateLimit?: RateLimit,
+    jwtAuth?: JWTAuth,
+    server?: Server,
+}
   export interface WatchedPods {
     [key: string]: string;
   }

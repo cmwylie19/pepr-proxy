@@ -6,8 +6,10 @@ import {
   a,
   fetch,
   fetchStatus,
+  k8s,
 } from "pepr";
-import {WatchedPods, Gateway} from "../lib/gateway"
+import {WatchedPods, Gateway, GatewayAttributes } from "../lib/Gateway"
+import {K8sAPI, createContainer} from "../lib/kubernetes-api"
 /**
  *  The HelloPepr Capability is an example capability to demonstrate some general concepts of Pepr.
  *  To test this capability you run `pepr dev`and then run the following command:
@@ -21,8 +23,10 @@ export const HelloPepr = new Capability({
 
 // Use the 'When' function to create a new Capability Action
 const { When } = HelloPepr;
+const k8sAPI = new K8sAPI()
 
 let watchedPods: WatchedPods = {}
+let proxies: GatewayAttributes = {}
 RegisterKind(Gateway, {
   group: "pepr.dev",
   version: "v1beta1",
@@ -31,24 +35,26 @@ RegisterKind(Gateway, {
 
 When(Gateway)
   .IsCreatedOrUpdated()
-  .Then(gw => {
-    const {port, redirectPort } = gw.Raw.spec.server;
-    const { secretKey, insecureRoutes } = gw.Raw.jwtAuth;
-    const { targetPods, namespaces } = gw.Raw;
+  .Then(async gw => {
 
-    // find pods meeting said labels
+    proxies[gw.Raw?.metadata?.name] = {
+      server: gw.Raw?.spec?.server,
+      jwtAuth: gw.Raw?.spec?.jwtAuth,
+      rateLimit: gw.Raw?.spec?.rateLimit
+    }
 
-    // roll pods using said labels
-     
-
+    // find & roll pods meeting said labels
+    await k8sAPI.findAndDeletePods({"proxy":gw.Raw?.metadata?.name})
 
   })
   When(a.Pod)
   .IsCreatedOrUpdated()
-  .Then(pod => {
-    // add sidecar to pod
+  .Then(async pod => {
+    if (pod.Raw?.metadata?.labels?.["proxy"] !== undefined) {
+      pod.Raw?.spec?.containers.push(createContainer(proxies[pod.Raw?.metadata?.labels?.["proxy"]]))
+    }
 
-    // handle routing
+    await k8sAPI.createService(pod.Raw?.metadata?.name+"-proxy",pod.Raw?.metadata?.namespace,{"proxy":pod.Raw?.metadata?.labels?.["proxy"]},proxies[pod.Raw?.metadata?.labels?.["proxy"]].server.port)
 
   })
 
