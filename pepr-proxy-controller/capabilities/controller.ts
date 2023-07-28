@@ -5,7 +5,7 @@ import {
   a,
 } from "pepr";
 import { Gateway, GatewayAttributes } from "./lib/gateway"
-import {K8sAPI, createContainer} from "./lib/kubernetes-api"
+import { K8sAPI, createContainer } from "./lib/kubernetes-api"
 /**
  *  The HelloPepr Capability is an example capability to demonstrate some general concepts of Pepr.
  *  To test this capability you run `pepr dev`and then run the following command:
@@ -39,15 +39,15 @@ When(Gateway)
       rateLimit: gw.Raw?.spec?.rateLimit
     }
 
-    await k8sAPI.findAndDeletePods({"proxy":gw.Raw?.metadata?.name})
+    await k8sAPI.findAndDeletePods({ "proxy": gw.Raw?.metadata?.name })
   })
 
-  When(a.Pod)
+When(a.Pod)
   .IsCreatedOrUpdated()
   .Then(async pod => {
     if (pod.Raw?.metadata?.labels?.["proxy"] !== undefined) {
       pod.Raw?.spec?.containers.push(createContainer(proxies[pod.Raw?.metadata?.labels?.["proxy"]]))
     }
-    await k8sAPI.createService(pod.Raw?.metadata?.name+"-proxy",pod.Raw?.metadata?.namespace,{"proxy":pod.Raw?.metadata?.labels?.["proxy"]},proxies[pod.Raw?.metadata?.labels?.["proxy"]].server.port)
+    await k8sAPI.createService(pod.Raw?.metadata?.name + "-proxy", pod.Raw?.metadata?.namespace, { "proxy": pod.Raw?.metadata?.labels?.["proxy"] }, proxies[pod.Raw?.metadata?.labels?.["proxy"]].server.port)
   })
 

@@ -67,3 +67,21 @@ spec:
   dnsPolicy: ClusterFirst
   restartPolicy: Always
 status: {}
+---
+apiVersion: pepr.dev/v1beta1
+kind: Gateway
+metadata:
+  name: case-was-here
+  namespace: default
+spec:
+  server:
+    redirectPort: 80
+    port: 8080 
+  jwtAuth:
+    secretKey: "secret"
+  rateLimit:
+    rate: 5
+    
+
+  message: replace-me
+  counter: 0
