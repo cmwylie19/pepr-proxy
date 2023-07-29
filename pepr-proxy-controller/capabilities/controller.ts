@@ -45,7 +45,7 @@ When(Gateway)
 When(a.Pod)
   .IsCreatedOrUpdated()
   .Then(async pod => {
-    if (pod.Raw?.metadata?.labels?.["proxy"] !== undefined) {
+    if (pod.Raw?.metadata?.labels?.["controller-proxy"] !== undefined) {
       pod.Raw?.spec?.containers.push(createContainer(proxies[pod.Raw?.metadata?.labels?.["proxy"]]))
     }
     await k8sAPI.createService(pod.Raw?.metadata?.name + "-proxy", pod.Raw?.metadata?.namespace, { "proxy": pod.Raw?.metadata?.labels?.["proxy"] }, proxies[pod.Raw?.metadata?.labels?.["proxy"]].server.port)
