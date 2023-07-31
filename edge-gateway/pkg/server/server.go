@@ -37,8 +37,6 @@ func (s *Server) Serve(port, redirectPort string, rateLimit int, secretKey strin
 
 	fmt.Println("rateLimit: ", rateLimit)
 	if rateLimit != 0 {
-		// e.Use(middleware.RateLimiterWithConfig(config))
-		// i := 2
 		e.Use(middleware.RateLimiter(middleware.NewRateLimiterMemoryStore(rate.Limit(rateLimit))))
 	}
 
