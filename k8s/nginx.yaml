@@ -9,6 +9,19 @@ spec:
   containers:
   - name: gateway
     image: cmwylie19/edge-gateway:0.0.1
+    command:
+     - ./edge-gateway
+      - serve
+      - -r
+      - "80"
+      - -p
+      - "8080"
+      - rateLimit
+      - --rate
+      - "5"
+      - jwt
+      - -s
+      - secret
     resources:
       requests:
         memory: "64Mi"
@@ -16,7 +29,8 @@ spec:
       limits:
         memory: "128Mi"
         cpu: "500m"
-    command: ["./edge-gateway","serve","-r","80","-p","8080"]
+    # command: ["./edge-gateway","serve","-r","80","-p","8080"]
+    
   - image: nginx
     name: nginx
     ports:

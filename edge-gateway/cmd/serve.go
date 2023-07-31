@@ -37,8 +37,8 @@ Examples:
 		fmt.Println("serve called")
 		server := server.Server{}
 
-		fmt.Printf("Running server\nport %s\nredirectPort %s\nrateLimit %d\nsecretKey %s\ninsecureRoutes %s", DefaultPort, DefaultRedirectPort, rateLimit, secretKey, insecureRoutes)
-		server.Serve(DefaultPort, DefaultRedirectPort, rateLimit, secretKey, insecureRoutes)
+		fmt.Printf("Running server\nport %s\nredirectPort %s\nrateLimit %d\nsecretKey %s", DefaultPort, DefaultRedirectPort, rateLimit, secretKey)
+		server.Serve(DefaultPort, DefaultRedirectPort, rateLimit, secretKey)
 	},
 }
 var (
@@ -50,9 +50,6 @@ var (
 	rateLimit = 0
 	// secretKey is the secret key for JWT validation.
 	secretKey = ""
-	// insecureRoutes are routes that do not require JWT validation.
-	insecureRoutes = []string{}
-	// loginURL is the URL to redirect users to for login.
 )
 
 func init() {
@@ -61,6 +58,5 @@ func init() {
 	serveCmd.PersistentFlags().StringVarP(&DefaultPort, "port", "p", "3050", "(optional) Port to run the edge-gateway.")
 	serveCmd.PersistentFlags().IntVarP(&rateLimit, "rate", "", 0, "Requests per minute. 0 means none")
 	serveCmd.PersistentFlags().StringVarP(&secretKey, "secret-key", "s", "", "Secret key for JWT validation. No secret means no JWT validation.")
-	serveCmd.PersistentFlags().StringSliceVarP(&insecureRoutes, "insecure-routes", "i", []string{}, "Routes that do not require JWT validation.")
 
 }

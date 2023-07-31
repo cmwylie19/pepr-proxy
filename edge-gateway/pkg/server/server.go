@@ -16,7 +16,7 @@ import (
 type Server struct {
 }
 
-func (s *Server) Serve(port, redirectPort string, rateLimit int, secretKey string, insecureRoutes []string) {
+func (s *Server) Serve(port, redirectPort string, rateLimit int, secretKey string) {
 	e := echo.New()
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins: []string{"*"},
@@ -27,17 +27,6 @@ func (s *Server) Serve(port, redirectPort string, rateLimit int, secretKey strin
 	if secretKey != "" {
 		e.Use(middleware.JWTWithConfig(middleware.JWTConfig{
 			SigningKey: []byte(secretKey),
-
-			Skipper: func(c echo.Context) bool {
-				// Skip authentication for signup and login requests
-				for _, route := range insecureRoutes {
-					if c.Path() == route || c.Path() == "/not-authorized" {
-						return true
-					}
-				}
-				e.Logger.Info("JWT Expired: ", c.Path())
-				return false
-			},
 		}))
 	}
 
